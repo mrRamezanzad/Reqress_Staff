@@ -1,0 +1,89 @@
+nav.scroll .navbar-brand {
+    color: #BB467F;
+    // height: green;
+}
+
+.card {
+    img {
+        margin: 10px auto;
+        height: 200px !important;
+        width: 200px !important;
+        // border-radius: 50%;
+
+    }
+}
+
+.modal {
+    border-radius: 10px;
+
+    .card {
+        img {
+            background-size: cover;
+            // width: 100% !important;
+            // height: 250px !important;
+            border-radius: 5px;
+        }
+
+        span {
+            font-weight: 300;
+            color: whitesmoke;
+        }
+    }
+}
+
+.modal-content {
+    color: white;
+
+    div {
+        border: none;
+    }
+
+    [data-bs-dismiss="modal"] {
+        color: white !important;
+
+        &:hover {
+            color: #BC2D3B !important;
+        }
+    }
+
+    #save {
+        &-new {
+            &:hover {
+                color: white !important;
+            }
+        }
+
+        &-update {
+            &:hover {
+                color: white !important;
+            }
+        }
+    }
+
+    #delete-user[data-bs-dismiss=modal] {
+
+        color: black !important;
+
+        &:hover {
+            color: black !important;
+        }
+    }
+}
+
+.btn-add {
+    align-self: flex-end;
+}
+
+.active a {
+    background-color: #212529 !important;
+    border: #212529;
+}
+
+.page-link {
+    color: #212529;
+
+    &:hover {
+        color: #212529;
+        cursor: pointer;
+    }
+}
