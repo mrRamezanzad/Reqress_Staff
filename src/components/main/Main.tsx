@@ -1,71 +1,20 @@
+import Image from 'next/image';
+import Card from '../card/Card';
+
 export default function Main() {
+  const data = [
+    { id: '1', email: 'aliahmadi@gmail.com', image: '/assets/user1.jpg' },
+    { id: '2', email: 'saeedstone@gmail.com', image: '/assets/user2.jpg' },
+    { id: '3', email: 'sameasghari@gmail.com', image: '/assets/user6.jpg' },
+    { id: '4', email: 'imyusef@gmail.com', image: '/assets/user3.jpg' },
+    { id: '5', email: 'avamusicsamibeigi@gmail.com', image: '/assets/user4.jpg' },
+    { id: '6', email: 'avamusicsamibeigi@gmail.com', image: '/assets/user6.jpg' },
+  ]
   return (
     <main className="row">
-      <div className="col-md-4 mb-3 ">
-        <div className="card shadow">
-          <img src="/assets/user1.jpg" className="card-img-top rounded-circle" alt="..." />
-          <div className="card-body">
-            <p className="card-text fw-bold">id: <span id="id">1</span></p>
-            <p className="card-text">email: <span id="email">aliahmadi@gmail.com</span></p>
-            <a user-id="1" data-bs-toggle="modal" data-bs-target="#more-info-modal" className="btn btn-dark main--cards--card--card-body--more-info">more info</a>
-          </div>
-        </div>
-      </div>
-
-      <div className="col-md-4 mb-3 ">
-        <div className="card shadow">
-          <img src="/assets/user2.jpg" className="card-img-top rounded-circle" alt="..." />
-          <div className="card-body">
-            <p className="card-text fw-bold">id: <span id="id">2</span></p>
-            <p className="card-text">email: <span id="email">saeedstone@gmail.com</span></p>
-            <a user-id="2" data-bs-toggle="modal" data-bs-target="#more-info-modal" className="btn btn-dark main--cards--card--card-body--more-info">more info</a>
-          </div>
-        </div>
-      </div>
-
-      <div className="col-md-4 mb-3 ">
-        <div className="card shadow">
-          <img src="/assets/user6.jpg" className="card-img-top rounded-circle" alt="..." />
-          <div className="card-body">
-            <p className="card-text fw-bold">id: <span id="id">3</span></p>
-            <p className="card-text">email: <span id="email">sameasghari@gmail.com</span></p>
-            <a user-id="3" data-bs-toggle="modal" data-bs-target="#more-info-modal" className="btn btn-dark main--cards--card--card-body--more-info">more info</a>
-          </div>
-        </div>
-      </div>
-
-      <div className="col-md-4 mb-3 ">
-        <div className="card shadow">
-          <img src="/assets/user3.jpg" className="card-img-top rounded-circle" alt="..." />
-          <div className="card-body">
-            <p className="card-text fw-bold">id: <span id="id">4</span></p>
-            <p className="card-text">email: <span id="email">imyusef@gmail.com</span></p>
-            <a user-id="4" data-bs-toggle="modal" data-bs-target="#more-info-modal" className="btn btn-dark main--cards--card--card-body--more-info">more info</a>
-          </div>
-        </div>
-      </div>
-
-      <div className="col-md-4 mb-3 ">
-        <div className="card shadow">
-          <img src="/assets/user4.jpg" className="card-img-top rounded-circle" alt="..." />
-          <div className="card-body">
-            <p className="card-text fw-bold">id: <span id="id">5</span></p>
-            <p className="card-text">email: <span id="email">avamusicsamibeigi@gmail.com</span></p>
-            <a user-id="5" data-bs-toggle="modal" data-bs-target="#more-info-modal" className="btn btn-dark main--cards--card--card-body--more-info">more info</a>
-          </div>
-        </div>
-      </div>
-
-      <div className="col-md-4 mb-3 ">
-        <div className="card shadow">
-          <img src="/assets/user6.jpg" className="card-img-top rounded-circle" alt="..." />
-          <div className="card-body">
-            <p className="card-text fw-bold">id: <span id="id">6</span></p>
-            <p className="card-text">email: <span id="email">avamusicsamibeigi@gmail.com</span></p>
-            <a user-id="6" data-bs-toggle="modal" data-bs-target="#more-info-modal" className="btn btn-dark main--cards--card--card-body--more-info">more info</a>
-          </div>
-        </div>
-      </div>
+      {data.map(item => {
+        return <Card key={item.id} id={item.id} email={item.email} image={item.image} />
+      })}
     </main>
   )
 }
