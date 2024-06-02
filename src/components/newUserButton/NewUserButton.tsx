@@ -1,3 +1,5 @@
+import './NewUserButton.css'
+
 export default function NewUserButton() {
   return (
     <div className="new-user d-flex justify-content-end">
