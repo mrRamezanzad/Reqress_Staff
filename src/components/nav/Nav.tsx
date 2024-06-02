@@ -30,9 +30,7 @@ export default function Nav() {
                             </ul>
                         </li>
                         <li className="nav-item">
-                            {/* fix: add tabindex */}
-                            <Link id="signup" className="nav-link text-danger" href="#" data-bs-toggle="modal" data-bs-target="#more-info-modal">sign up</Link>
-                            {/* <a id="signup" className="nav-link text-danger" href="#" tabindex="-1" data-bs-toggle="modal" data-bs-target="#more-info-modal">sign up</a> */}
+                            <Link id="signup" className="nav-link text-danger" tabIndex={1} href="#" data-bs-toggle="modal" data-bs-target="#more-info-modal">sign up</Link>
                         </li>
                     </ul>
                     <form className="d-flex">
