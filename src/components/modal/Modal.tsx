@@ -1,6 +1,15 @@
+'use client'
+
+import { useEffect } from 'react'
 import './Modal.css'
+import Image from 'next/image'
 
 export default function Modal() {
+
+  useEffect(() => {
+    require('bootstrap/dist/js/bootstrap.bundle')
+    require('jquery')
+  })
   return (
     // Fix: add style and tabindex
     <div className="modal fade" id="more-info-modal" aria-labelledby="moreInfoModalLabel" aria-hidden="true">
@@ -14,7 +23,7 @@ export default function Modal() {
           <div className="modal-body">
             <div className="col-12 ">
               <div className="card bg-dark">
-                <img src="/assets/user2.jpg" className="card-img-top" alt="..." />
+                <Image src="/assets/user2.jpg" className="card-img-top" alt="..." width={100} height={100} layout='responsive' />
                 <div className="card-body fw-bold bg-dark">
                   <p className="card-text ">id: <span id="id">2</span></p>
                   <p className="card-text">first name: <span id="first-name">saeed</span></p>
