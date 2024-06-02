@@ -10,7 +10,7 @@ export default function Card({ id, email, image }: CardProps) {
   return (
     <div className="col-md-4 mb-3 ">
       <div className="card shadow">
-        <Image src={image} className="card-img-top rounded-circle" alt="..." width={100} height={100} layout='responsive' />
+        <Image src={image} className="card-img-top rounded-circle" alt="..." width={200} height={200} />
         <div className="card-body">
           <p className="card-text fw-bold">id: <span id="id">{id}</span></p>
           <p className="card-text">email: <span id="email">{email}</span></p>

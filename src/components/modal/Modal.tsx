@@ -23,7 +23,7 @@ export default function Modal() {
           <div className="modal-body">
             <div className="col-12 ">
               <div className="card bg-dark">
-                <Image src="/assets/user2.jpg" className="card-img-top" alt="..." width={100} height={100} layout='responsive' />
+                <Image src="/assets/user2.jpg" className="card-img-top" alt="..." width={250} height={250} />
                 <div className="card-body fw-bold bg-dark">
                   <p className="card-text ">id: <span id="id">2</span></p>
                   <p className="card-text">first name: <span id="first-name">saeed</span></p>
