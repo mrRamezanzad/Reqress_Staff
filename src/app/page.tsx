@@ -1,12 +1,20 @@
+'use client'
+
 import Nav from '@/components/nav/Nav';
 import Sort from '@/components/sort/Sort';
-import Modal from '@/components/modal/Modal';
 import Pagination from '@/components/pagination/Pagination';
 import Main, { User } from '@/components/main/Main';
 import NewUserButton from '@/components/newUserButton/NewUserButton';
 import SignupModal from '@/components/signup-modal/SignupModal';
 import UpdateModal from '@/components/update-modal/UpdateModal';
 import { useEffect, useState } from 'react';
+
+
+function getNumberOfPages(users: Array<User>, currentPage = 1): number {
+    let pages = Math.ceil(users.length / 6)
+
+    return pages;
+}
 
 export default function Home() {
     const [users, setUsers] = useState([
@@ -54,9 +62,18 @@ export default function Home() {
             "avatar": "/assets/user7.png"
         },
     ])
+
+    const [currentPage, setCurrentPage] = useState(1);
+
+    const onCurrentPageChange = (page: number) => {
+        setCurrentPage(page);
+    }
+
     useEffect(() => {
         // async () => {
     }, [users])
+
+    const pages = getNumberOfPages(users)
 
     const addNewUser = (user: User) => {
         setUsers([...users, user])
@@ -69,5 +86,6 @@ export default function Home() {
         <NewUserButton />
         <SignupModal onSubmit={addNewUser} />
         <UpdateModal />
+        <Pagination pages={pages} currentPage={currentPage} onCurrentPageChange={onCurrentPageChange} />
     </>);
 }

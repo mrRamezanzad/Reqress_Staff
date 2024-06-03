@@ -1,17 +1,35 @@
-import Link from 'next/link';
+import { useState } from 'react';
+import PaginationButton from './pagination-button/PaginationButton';
 
-export default function Pagination() {
+export interface PaginationProps {
+  pages: number;
+  currentPage: number;
+  onCurrentPageChange?: (page: number) => void;
+}
+
+export default function Pagination({ pages = 1, currentPage = 1, onCurrentPageChange = () => { } }: PaginationProps) {
+  const paginations = Array.from({ length: pages }, (_value, index) => index + 1);
+
+
+  const changePageHandler = (page: number) => {
+    const isCurrentPageChanged = page !== currentPage;
+
+    if (isCurrentPageChanged) {
+
+      onCurrentPageChange(page);
+    }
+  }
+
   return (
     <div className="row ">
       <nav aria-label="..." className="d-flex justify-content-center">
         <ul id="pagination" className="pagination pagination-sm">
-          <li className="page-item active">
-            <Link id="1" className="page-link" href="?page=1&quot;">1</Link>
-          </li>
-
-          <li className="page-item ">
-            <Link id="2" className="page-link" href=" ?page=2&quot;">2</Link>
-          </li>
+          {
+            paginations.map(pagination => {
+              const isActive = pagination === currentPage;
+              return <PaginationButton key={pagination} id={`${pagination}`} isActive={isActive} onClick={changePageHandler} />
+            })
+          }
         </ul>
       </nav>
     </div>)
