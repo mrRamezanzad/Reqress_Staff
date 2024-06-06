@@ -1,5 +1,6 @@
 'use client'
 
+import { useRef } from 'react';
 import Modal from '../modal/Modal';
 
 export interface SignupModalProps {
@@ -7,6 +8,8 @@ export interface SignupModalProps {
 }
 
 export default function SignupModal({ onUserSignup }: SignupModalProps) {
+  const formRef = useRef<HTMLFormElement>(null);
+
   function signupUser(formData: FormData) {
     const formId = formData.get('id');
     const id = formId instanceof File ? NaN : parseInt(formId || '');
@@ -21,10 +24,12 @@ export default function SignupModal({ onUserSignup }: SignupModalProps) {
       }
 
       onUserSignup(rawFormData)
+
+      formRef.current?.reset()
     }
   }
 
-  const body = <form className=" bg-dark" action={signupUser}>
+  const body = <form className=" bg-dark" action={signupUser} ref={formRef}>
     <div className="mb-3">
       <label className="form-label">user id: </label>
       <input type="text" className="form-control " name="id" />
@@ -45,8 +50,8 @@ export default function SignupModal({ onUserSignup }: SignupModalProps) {
       <label className="form-label">picture URL: </label>
       <input type="text" className="form-control" name="avatar" />
     </div>
-    <button id="save-new" className=" btn btn-outline-success offset-left my-3" data-bs-dismiss="modal" type='submit'> Save </button>
-  </form>
+    <button id="save-new" className="btn btn-outline-success offset-left my-3" data-bs-dismiss="modal" type='submit'> Save </button>
+  </form >
 
   return (<>
     <Modal id='signup-modal' body={body} />
