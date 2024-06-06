@@ -1,8 +1,6 @@
 import Image from 'next/image';
 import Modal from '../modal/Modal';
 import { User } from '../main/Main';
-import { useEffect, useState } from 'react';
-import UserUpdateModal from '../user-update-modal/UserUpdateModal';
 
 export interface UpdateModalProps {
   user: User | null;
@@ -10,21 +8,8 @@ export interface UpdateModalProps {
 }
 
 export default function UserDetailModal({ user, onUserDelete }: UpdateModalProps) {
-  const [isUpdating, setIsUpdating] = useState(false);
-
-  useEffect(() => {
-    console.log('useEffect', { isUpdating })
-    setIsUpdating(false)
-  }, [isUpdating])
-
-  const onDeleteHandler = (event: React.MouseEvent<HTMLElement>) => {
+  const onDeleteHandler = () => {
     onUserDelete(user?.id)
-  }
-
-  const onUpdateHandler = (event: React.MouseEvent<HTMLElement>) => {
-    if (isUpdating === false) {
-      setIsUpdating(true);
-    }
   }
 
   const header = <div className="modal-header ">
@@ -47,11 +32,9 @@ export default function UserDetailModal({ user, onUserDelete }: UpdateModalProps
   </div>
 
   const footer = <div className="modal-footer">
-    <button id="update-user" type="button" className="btn btn-warning" onClick={onUpdateHandler}>Update</button>
+    <button id="update-user" type="button" className="btn btn-warning" data-bs-toggle="modal" data-bs-target="#user-update-modal">Update</button>
     <button id="delete-user" type="button" className="btn btn-danger" data-bs-dismiss="modal" onClick={onDeleteHandler}>Delete</button>
   </div>
 
-  const updateOrDetailModal = isUpdating ? UserUpdateModal({ user }) : <Modal id='update-modal' header={header} body={body} footer={footer} />
-
-  return updateOrDetailModal;
+  return <Modal id='user-detail-modal' header={header} body={body} footer={footer} />;
 }

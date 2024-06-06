@@ -8,6 +8,7 @@ import NewUserButton from '@/components/newUserButton/NewUserButton';
 import SignupModal from '@/components/signup-modal/SignupModal';
 import UserDetailModal from '@/components/user-detail-modal/UserDetailModal';
 import { useEffect, useState } from 'react';
+import UserUpdateModal from '@/components/user-update-modal/UserUpdateModal';
 
 
 function getNumberOfPages(users: Array<User>, currentPage = 1): number {
@@ -87,6 +88,19 @@ export default function Home() {
         setUsers(users.filter(user => user.id !== id));
     }
 
+    const onUserUpdateHandler = (updatedUser: User) => {
+        const updatedUsers = users.map<User>((user) => {
+            const shouldUpdate = user.id === updatedUser.id;
+
+            if (shouldUpdate) {
+                return updatedUser;
+            }
+
+            return user;
+        });
+
+        setUsers(updatedUsers);
+    }
 
     return (<>
         <Nav />
@@ -94,9 +108,8 @@ export default function Home() {
         <Main users={paginateUsers()} onUserSelect={onUserSelectHandler} />
         <NewUserButton />
         <SignupModal onUserSignup={onUserSignupHandler} />
-        <UserDetailModal user={selectedUser}
-            //  onUserUpdateButtonClick={onUserUpdateButtonClickHandler}
-            onUserDelete={onUserDeleteHandler} />
+        <UserDetailModal user={selectedUser} onUserDelete={onUserDeleteHandler} />
+        <UserUpdateModal user={selectedUser} onUserUpdate={onUserUpdateHandler} />
         <Pagination pages={pages} currentPage={currentPage} onCurrentPageChange={onCurrentPageChange} />
     </>);
 }
