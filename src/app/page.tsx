@@ -65,13 +65,13 @@ export default function Home() {
     const [selectedUser, setSelectedUser] = useState<User | null>(null)
     const [currentPage, setCurrentPage] = useState(1);
 
+    useEffect(() => { }, [users, currentPage])
+
     const onCurrentPageChange = (page: number) => {
         setCurrentPage(page);
     }
 
-    useEffect(() => {
-        // async () => {
-    }, [users])
+    const paginateUsers = (): Array<User> => users.slice((currentPage - 1) * 6, currentPage * 6)
 
     const pages = getNumberOfPages(users)
 
