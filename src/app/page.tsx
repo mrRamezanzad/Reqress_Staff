@@ -11,7 +11,7 @@ import { useEffect, useState } from 'react';
 import UserUpdateModal from '@/components/user-update-modal/UserUpdateModal';
 
 
-function getNumberOfPages(users: Array<User>, currentPage = 1): number {
+function getNumberOfPages(users: Array<User>): number {
     let pages = Math.ceil(users.length / 6)
 
     return pages;
@@ -64,17 +64,27 @@ export default function Home() {
         },
     ])
     const [selectedUser, setSelectedUser] = useState<User | null>(null)
+    const [usersToShow, setUsersToShow] = useState<Array<User>>(users)
+    const [pages, setPages] = useState(0);
     const [currentPage, setCurrentPage] = useState(1);
 
-    useEffect(() => { }, [users, currentPage])
+    useEffect(() => {
+        setPageAndUsersToShow(users);
+    },
+        [users]
+    )
+
+    const setPageAndUsersToShow = (users: Array<User>) => {
+        setUsersToShow(users)
+        setPages(getNumberOfPages(users))
+    }
 
     const onCurrentPageChange = (page: number) => {
         setCurrentPage(page);
     }
 
-    const paginateUsers = (): Array<User> => users.slice((currentPage - 1) * 6, currentPage * 6)
+    const currentPageUsers = (users: Array<User>): Array<User> => users.slice((currentPage - 1) * 6, currentPage * 6)
 
-    const pages = getNumberOfPages(users)
 
     const onUserSignupHandler = (user: User) => {
         setUsers([...users, user])
@@ -85,7 +95,8 @@ export default function Home() {
     }
 
     const onUserDeleteHandler = (id: number) => {
-        setUsers(users.filter(user => user.id !== id));
+        const updatedUsers = users.filter(user => user.id !== id)
+        setUsers(updatedUsers);
     }
 
     const onUserUpdateHandler = (updatedUser: User) => {
@@ -102,10 +113,36 @@ export default function Home() {
         setUsers(updatedUsers);
     }
 
+    const onSearchHandler = (search: string) => {
+        const normalizedSearch = search.toLowerCase();
+
+        const shouldResetSearchResults = normalizedSearch === '';
+        if (shouldResetSearchResults) {
+            return setPageAndUsersToShow(users);
+        }
+
+        // solution 1
+        const foundUsers = users.filter((user) => user.id.toString() == normalizedSearch ||
+            user.first_name === normalizedSearch || user.last_name === normalizedSearch ||
+            user.email === normalizedSearch || user.avatar === normalizedSearch
+        )
+
+        setPageAndUsersToShow(foundUsers)
+
+        // solution 2
+        // foundUsers = users.filter((el) => String(el.id).includes(normalizedSearch) || String(el.first_name).includes(normalizedSearch) ||
+        //     String(el.last_name).toLowerCase().includes(normalizedSearch) || String(el.email).includes(normalizedSearch) || String(el.avatar).includes(normalizedSearch))
+
+        //solution 3 is regex but i'm tired (00)
+        // show the damn users
+        // showUsers(foundUsers)
+
+    }
+
     return (<>
-        <Nav />
+        <Nav onSearch={onSearchHandler} />
         <Sort />
-        <Main users={paginateUsers()} onUserSelect={onUserSelectHandler} />
+        <Main users={currentPageUsers(usersToShow)} onUserSelect={onUserSelectHandler} />
         <NewUserButton />
         <SignupModal onUserSignup={onUserSignupHandler} />
         <UserDetailModal user={selectedUser} onUserDelete={onUserDeleteHandler} />

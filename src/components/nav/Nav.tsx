@@ -1,7 +1,51 @@
+import { useEffect, useState } from 'react';
 import './Nav.css'
 import Link from 'next/link';
+import $ from 'jquery'
 
-export default function Nav() {
+export interface NavProps {
+    onSearch: Function;
+}
+
+export default function Nav({ onSearch }: NavProps) {
+    const [isSearching, setIsSearching] = useState(false)
+
+    useEffect(() => {
+        window.addEventListener('keyup', keyUpEventHandler);
+        $("#search-input").on('focus', () => setIsSearching(true));
+        $("#search-input").on('blur', () => setIsSearching(false));
+
+        return () => {
+            window.removeEventListener('keyup', keyUpEventHandler);
+        }
+    })
+
+    const keyUpEventHandler = (event: KeyboardEvent) => {
+        const pressedKey = event.key
+
+        if (isSearching) {
+            const shouldExitSearch = pressedKey === "Escape"
+
+            if (shouldExitSearch) {
+                $("#search-input").trigger('blur')
+                return setIsSearching(false)
+            }
+
+            return search()
+        }
+
+        const shouldStartSearch = pressedKey === "/" || pressedKey === "?"
+        if (shouldStartSearch) {
+            $("#search-input").trigger("focus")
+            return setIsSearching(true);
+        }
+    };
+
+    const search = () => {
+        const searchQuery = $("#search-input")?.val()?.toString() || ''
+        onSearch(searchQuery)
+    }
+
     return (
         <nav className="navbar navbar-expand-lg navbar-light bg-light mb-5 rounded-bottom sticky-top shadow-sm">
             <div className="container-fluid">
@@ -34,9 +78,12 @@ export default function Nav() {
                             <Link id="signup" className="nav-link text-danger" tabIndex={1} href="#" data-bs-toggle="modal" data-bs-target="#signup-modal">sign up</Link>
                         </li>
                     </ul>
-                    <form className="d-flex">
+                    <form className="d-flex" onSubmit={e => {
+                        e.preventDefault();
+                        search();
+                    }}>
                         <input id="search-input" className="form-control me-2 " type="search" placeholder="Press / to Search " aria-label="Search" />
-                        <Link href="" type="button" id="search-button" className="btn btn-outline-success">Search</Link>
+                        <div id="search-button" className="btn btn-outline-success">Search</div>
                     </form>
                 </div>
             </div>
