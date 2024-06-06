@@ -6,7 +6,7 @@ import Pagination from '@/components/pagination/Pagination';
 import Main, { User } from '@/components/main/Main';
 import NewUserButton from '@/components/newUserButton/NewUserButton';
 import SignupModal from '@/components/signup-modal/SignupModal';
-import UpdateModal from '@/components/update-modal/UpdateModal';
+import UserDetailModal from '@/components/user-detail-modal/UserDetailModal';
 import { useEffect, useState } from 'react';
 
 
