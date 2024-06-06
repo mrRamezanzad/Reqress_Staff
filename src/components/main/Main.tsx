@@ -9,15 +9,22 @@ export interface User {
 }
 
 export interface MainProps {
-  users: Array<User>
+  users: Array<User>;
+  onUserSelect: Function;
 }
 
-export default function Main({ users }: MainProps) {
+export default function Main({ users, onUserSelect }: MainProps) {
+
+  const onClickHandle = (id: number): void => {
+    const selectedUser = users.find(user => user.id === id)
+    onUserSelect(selectedUser);
+  }
+
   return (
     <main className="row">
       {
-        users.map(item => {
-          return <Card key={item.id} id={item.id.toString()} email={item.email} image={item.avatar} />
+        users.map((item, index) => {
+          return <Card key={index} id={item.id} email={item.email} image={item.avatar} onClick={onClickHandle} />
         })
       }
     </main>

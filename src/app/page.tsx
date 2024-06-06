@@ -62,7 +62,7 @@ export default function Home() {
             "avatar": "/assets/user7.png"
         },
     ])
-
+    const [selectedUser, setSelectedUser] = useState<User | null>(null)
     const [currentPage, setCurrentPage] = useState(1);
 
     const onCurrentPageChange = (page: number) => {
@@ -79,13 +79,23 @@ export default function Home() {
         setUsers([...users, user])
     }
 
+    const onUserSelectHandler = (user: User) => {
+        setSelectedUser(user);
+    }
+
+    const onUserDeleteHandler = (id: number) => {
+        setUsers(users.filter(user => user.id !== id));
+    }
+
+
     return (<>
         <Nav />
         <Sort />
-        <Main users={users} />
+        <Main users={paginateUsers()} onUserSelect={onUserSelectHandler} />
         <NewUserButton />
-        <SignupModal onSubmit={addNewUser} />
-        <UpdateModal />
+        <UserDetailModal user={selectedUser}
+            //  onUserUpdateButtonClick={onUserUpdateButtonClickHandler}
+            onUserDelete={onUserDeleteHandler} />
         <Pagination pages={pages} currentPage={currentPage} onCurrentPageChange={onCurrentPageChange} />
     </>);
 }
