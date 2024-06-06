@@ -3,20 +3,25 @@
 import Modal from '../modal/Modal';
 
 export interface SignupModalProps {
-  onSubmit: Function;
+  onUserSignup: Function;
 }
 
-export default function SignupModal({ onSubmit }: SignupModalProps) {
+export default function SignupModal({ onUserSignup }: SignupModalProps) {
   function signupUser(formData: FormData) {
-    const rawFormData = {
-      id: formData.get('id'),
-      first_name: formData.get('first_name'),
-      last_name: formData.get('last_name'),
-      email: formData.get('email'),
-      avatar: formData.get('avatar')
-    }
+    const formId = formData.get('id');
+    const id = formId instanceof File ? NaN : parseInt(formId || '');
 
-    onSubmit(rawFormData)
+    if (!isNaN(id)) {
+      const rawFormData = {
+        id,
+        first_name: formData.get('first_name'),
+        last_name: formData.get('last_name'),
+        email: formData.get('email'),
+        avatar: formData.get('avatar')
+      }
+
+      onUserSignup(rawFormData)
+    }
   }
 
   const body = <form className=" bg-dark" action={signupUser}>

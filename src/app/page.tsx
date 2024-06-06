@@ -75,7 +75,7 @@ export default function Home() {
 
     const pages = getNumberOfPages(users)
 
-    const addNewUser = (user: User) => {
+    const onUserSignupHandler = (user: User) => {
         setUsers([...users, user])
     }
 
@@ -93,6 +93,7 @@ export default function Home() {
         <Sort />
         <Main users={paginateUsers()} onUserSelect={onUserSelectHandler} />
         <NewUserButton />
+        <SignupModal onUserSignup={onUserSignupHandler} />
         <UserDetailModal user={selectedUser}
             //  onUserUpdateButtonClick={onUserUpdateButtonClickHandler}
             onUserDelete={onUserDeleteHandler} />
