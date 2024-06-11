@@ -14,7 +14,6 @@ export interface MainProps {
 }
 
 export default function Main({ users, onUserSelect }: MainProps) {
-
   const onClickHandle = (id: number): void => {
     const selectedUser = users.find(user => user.id === id)
     onUserSelect(selectedUser);
