@@ -1,50 +1,15 @@
-import { useEffect, useState } from 'react';
 import './Nav.css'
 import Link from 'next/link';
-import $ from 'jquery'
+import { useScrollbarEffect } from '@/app/hooks/useScrollbarEffect';
+import { useSearchEffect } from '@/app/hooks/useSearchEffect';
 
 export interface NavProps {
     onSearch: Function;
 }
 
 export default function Nav({ onSearch }: NavProps) {
-    const [isSearching, setIsSearching] = useState(false)
-
-    useEffect(() => {
-        window.addEventListener('keyup', keyUpEventHandler);
-        $("#search-input").on('focus', () => setIsSearching(true));
-        $("#search-input").on('blur', () => setIsSearching(false));
-
-        return () => {
-            window.removeEventListener('keyup', keyUpEventHandler);
-        }
-    })
-
-    const keyUpEventHandler = (event: KeyboardEvent) => {
-        const pressedKey = event.key
-
-        if (isSearching) {
-            const shouldExitSearch = pressedKey === "Escape"
-
-            if (shouldExitSearch) {
-                $("#search-input").trigger('blur')
-                return setIsSearching(false)
-            }
-
-            return search()
-        }
-
-        const shouldStartSearch = pressedKey === "/" || pressedKey === "?"
-        if (shouldStartSearch) {
-            $("#search-input").trigger("focus")
-            return setIsSearching(true);
-        }
-    };
-
-    const search = () => {
-        const searchQuery = $("#search-input")?.val()?.toString() || ''
-        onSearch(searchQuery)
-    }
+    useScrollbarEffect();
+    const search = useSearchEffect(onSearch);
 
     return (
         <nav className="navbar navbar-expand-lg navbar-light bg-light mb-5 rounded-bottom sticky-top shadow-sm">
@@ -83,7 +48,7 @@ export default function Nav({ onSearch }: NavProps) {
                         search();
                     }}>
                         <input id="search-input" className="form-control me-2 " type="search" placeholder="Press / to Search " aria-label="Search" />
-                        <div id="search-button" className="btn btn-outline-success">Search</div>
+                        <div id="search-button" className="btn btn-outline-success" onClick={search}>Search</div>
                     </form>
                 </div>
             </div>
