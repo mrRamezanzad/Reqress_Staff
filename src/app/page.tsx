@@ -7,15 +7,10 @@ import Main, { User } from '@/components/main/Main';
 import NewUserButton from '@/components/newUserButton/NewUserButton';
 import SignupModal from '@/components/signup-modal/SignupModal';
 import UserDetailModal from '@/components/user-detail-modal/UserDetailModal';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import UserUpdateModal from '@/components/user-update-modal/UserUpdateModal';
-
-
-function getNumberOfPages(users: Array<User>): number {
-    let pages = Math.ceil(users.length / 6)
-
-    return pages;
-}
+import { currentPageUsers, getNumberOfPages, getSortedUsers } from './utils';
+import { SortByEnum } from './AppContext';
 
 export default function Home() {
     const [users, setUsers] = useState([
@@ -62,33 +57,28 @@ export default function Home() {
             "email": "avamusicsamibeigi@gmail.com",
             "avatar": "/assets/user7.png"
         },
-    ])
-    const [selectedUser, setSelectedUser] = useState<User | null>(null)
-    const [usersToShow, setUsersToShow] = useState<Array<User>>(users)
-    const [pages, setPages] = useState(0);
+    ]);
+    const [selectedUser, setSelectedUser] = useState<User | null>(null);
     const [currentPage, setCurrentPage] = useState(1);
+    const [sortBy, setSortBy] = useState<SortByEnum>(SortByEnum.ID);
+    const [usersToShow, setUsersToShow] = useState<Array<User>>(preparePage({
+        users,
+        currentPage,
+        setCurrentPage,
+        sortBy: SortByEnum.ID
 
-    useEffect(() => {
-        setPageAndUsersToShow(users);
-    },
-        [users]
-    )
+    }));
+    const [pages, setPages] = useState(0);
 
-    const setPageAndUsersToShow = (users: Array<User>) => {
-        setUsersToShow(users)
-        setPages(getNumberOfPages(users))
-    }
+    const preparePage = ({ users, currentPage, setCurrentPage, sortBy }: any): Array<User> => {
+        let usersToShow = users;
 
-    const onCurrentPageChange = (page: number) => {
-        setCurrentPage(page);
-    }
+        usersToShow = currentPageUsers(users, currentPage, setCurrentPage);
+        usersToShow = getSortedUsers(sortBy, usersToShow);
+        setPages(getNumberOfPages(users));
 
-    const currentPageUsers = (users: Array<User>): Array<User> => users.slice((currentPage - 1) * 6, currentPage * 6)
-
-
-    const onUserSignupHandler = (user: User) => {
-        setUsers([...users, user])
-    }
+        return usersToShow;
+    };
 
     const onUserSelectHandler = (user: User) => {
         setSelectedUser(user);
@@ -96,8 +86,19 @@ export default function Home() {
 
     const onUserDeleteHandler = (id: number) => {
         const updatedUsers = users.filter(user => user.id !== id)
-        setUsers(updatedUsers);
+        updateUsers(updatedUsers);
     }
+
+
+    function updateUsers(users: Array<User>) {
+        setUsers(users);
+        updateUsersToShow(users);
+    }
+
+    function updateUsersToShow(users: Array<User>) {
+        const usersToShow = preparePage({ users, currentPage, setCurrentPage, sortBy });
+        setUsersToShow(usersToShow);
+    };
 
     const onUserUpdateHandler = (updatedUser: User) => {
         const updatedUsers = users.map<User>((user) => {
@@ -110,41 +111,20 @@ export default function Home() {
             return user;
         });
 
-        setUsers(updatedUsers);
+        updateUsers(updatedUsers);
     }
 
-    const onSearchHandler = (search: string) => {
-        const normalizedSearch = search.toLowerCase();
 
-        const shouldResetSearchResults = normalizedSearch === '';
-        if (shouldResetSearchResults) {
-            return setPageAndUsersToShow(users);
-        }
-
-        // solution 1
-        const foundUsers = users.filter((user) => user.id.toString() == normalizedSearch ||
-            user.first_name === normalizedSearch || user.last_name === normalizedSearch ||
-            user.email === normalizedSearch || user.avatar === normalizedSearch
-        )
-
-        setPageAndUsersToShow(foundUsers)
-
-        // solution 2
-        // foundUsers = users.filter((el) => String(el.id).includes(normalizedSearch) || String(el.first_name).includes(normalizedSearch) ||
-        //     String(el.last_name).toLowerCase().includes(normalizedSearch) || String(el.email).includes(normalizedSearch) || String(el.avatar).includes(normalizedSearch))
-
-        //solution 3 is regex but i'm tired (00)
-        // show the damn users
-        // showUsers(foundUsers)
-
+    const onCurrentPageChange = (page: number) => {
+        setCurrentPage(page);
     }
 
     return (<>
-        <Nav onSearch={onSearchHandler} />
-        <Sort />
-        <Main users={currentPageUsers(usersToShow)} onUserSelect={onUserSelectHandler} />
-        <NewUserButton />
-        <SignupModal onUserSignup={onUserSignupHandler} />
+        {/* <Nav onSearch={onSearchHandler} /> */}
+        {/* <Sort /> */}
+        <Main users={usersToShow} onUserSelect={onUserSelectHandler} />
+        {/* <NewUserButton /> */}
+        {/* <SignupModal onUserSignup={onUserSignupHandler} /> */}
         <UserDetailModal user={selectedUser} onUserDelete={onUserDeleteHandler} />
         <UserUpdateModal user={selectedUser} onUserUpdate={onUserUpdateHandler} />
         <Pagination pages={pages} currentPage={currentPage} onCurrentPageChange={onCurrentPageChange} />

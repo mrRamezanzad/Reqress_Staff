@@ -18,7 +18,7 @@ export default function Main({ users, onUserSelect }: MainProps) {
     const selectedUser = users.find(user => user.id === id)
     onUserSelect(selectedUser);
   }
-
+  console.log('users', users)
   return (
     <main className="row">
       {
